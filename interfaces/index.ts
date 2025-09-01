@@ -1,3 +1,5 @@
+import { Review } from "./review";
+
 export interface PropertyProps {
   name: string;
   address: {
@@ -15,6 +17,7 @@ export interface PropertyProps {
   };
   image: string;
   discount: string;
+  reviews: Review[];
 }
 
 export interface CardProps {
