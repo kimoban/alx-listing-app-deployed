@@ -1,5 +1,6 @@
 import { PropertyProps } from "@/interfaces/index";
 import { useState } from "react";
+import Image from "next/image";
 import BookingSection from "./BookingSection";
 import ReviewSection from "./ReviewSection";
 
@@ -54,22 +55,31 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => 
 
       {/* Image Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-8 h-96">
-        <div className="md:col-span-2 md:row-span-2">
-          <img
-            src={property.image}
-            alt={property.name}
-            className="w-full h-full object-cover rounded-lg"
-          />
-        </div>
-        {property.images?.slice(1, 5).map((image, index) => (
-          <div key={index} className={`${index >= 2 ? 'hidden md:block' : ''}`}>
-            <img
-              src={image}
-              alt={`${property.name} ${index + 2}`}
-              className="w-full h-full object-cover rounded-lg"
+        {property.images && property.images.length > 0 ? (
+          property.images.map((image, index) => (
+            <div key={index} className="relative h-96">
+              <Image
+                src={image}
+                alt={`${property.name} ${index + 1}`}
+                fill
+                className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 100vw, 25vw"
+                style={{ borderRadius: "0.5rem" }}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="relative h-96">
+            <Image
+              src={property.image}
+              alt={property.name}
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ borderRadius: "0.5rem" }}
             />
           </div>
-        ))}
+        )}
       </div>
 
       {/* Main Content Layout */}
@@ -92,7 +102,7 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => 
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as 'overview' | 'amenities' | 'reviews')}
                   className={`py-4 px-1 border-b-2 font-medium text-sm ${
                     activeTab === tab.id
                       ? 'border-gray-900 text-gray-900'
@@ -139,7 +149,7 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => 
             )}
 
             {activeTab === 'reviews' && (
-              <ReviewSection reviews={property.reviews || []} />
+              <ReviewSection propertyId={property.name} />
             )}
           </div>
 

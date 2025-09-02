@@ -1,10 +1,19 @@
 import React from "react";
 
-const BookingSection: React.FC = () => {
+interface BookingSectionProps {
+  price: number;
+  rating: number;
+  reviewCount: number;
+}
+
+const BookingSection: React.FC<BookingSectionProps> = ({ price, rating, reviewCount }) => {
   return (
     <section>
-      {/* Placeholder for BookingSection */}
-      <p>Booking section coming soon.</p>
+      <h2 className="text-xl font-semibold mb-2">Book this property</h2>
+      <p className="mb-2">Price: ${price}</p>
+      <p className="mb-2">Rating: {rating} stars</p>
+      <p className="mb-2">Reviews: {reviewCount}</p>
+      {/* Add booking form or actions here */}
     </section>
   );
 };
